@@ -67,11 +67,86 @@ function orderAlphabetically(array) {
 // Iteration 4: All rates average - Get the average of all rates with 2 decimals
 
 function ratesAverage(array) {
-    
+
+    if (array.length == 0) {
+        return 0
+    }
+
+
+    let totalRates = array.reduce((a, c) => {
+
+        if (c.rate) {
+            return a + c.rate;
+        }
+        else {
+            return a + 0;
+        }
+    }, 0);
+
+    let avgRate = (totalRates / array.length).toFixed(2);
+
+    return Number(avgRate);
+
 }
 
 // Iteration 5: Drama movies - Get the average of Drama Movies
 
+function dramaMoviesRate(array) {
+
+    let dramaMovies = array.filter(eachMovie => {
+        return eachMovie.genre.includes("Drama")
+    });
+
+    let avgDramaMovies = ratesAverage(dramaMovies);
+
+    return avgDramaMovies;
+}
+
 // Iteration 6: Time Format - Turn duration of the movies from hours to minutes
 
-// BONUS Iteration: Best yearly rate average - Best yearly rate average
+function turnHoursToMinutes(array) {
+
+    let copy = [...array];
+
+    let minArray = copy.map((eachMovie) => {
+
+        let duration = eachMovie.duration;
+
+        let min = 0;
+        let hour = 0;
+        let final = 0;
+        let temp;
+        if (duration.includes('h') && duration.includes('min')) {
+            temp = duration.replace('h', ' ').replace('min', ' ').trim();
+            let hour = Number(temp.substring(0, temp.indexOf(" ")));
+            let min = Number(temp.substring(temp.indexOf(" ") + 1));
+            console.log(hour + " " + min)
+            final = (hour * 60 + min);
+
+        }
+        else if (duration.includes('h')) {
+            hour = Number(duration.substring(0, duration.indexOf("h")));
+            final = hour * 60;
+
+        }
+        else if (duration.includes('min')) {
+            min = Number(duration.substring(0, duration.indexOf("min")));
+            final = min;
+        }
+
+        return {
+            title: eachMovie.title,
+            year: eachMovie.year,
+            director: eachMovie.director,
+            duration: final,
+            genre: eachMovie.genre,
+            rate: eachMovie.rate
+        }
+    })
+
+    return minArray;
+
+}
+
+// BONUS Iteration: Best yearly rate average - Best yearly rate average (SKIP)
+
